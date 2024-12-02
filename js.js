@@ -79,7 +79,7 @@ Handles and runs each individual round of
 rock paper scissor
 */
 function round() {
-    let player = recieveUserInput();
+    let player = receiveUserInput();
     let comp = generateCompTurn();
     let winState = checkWinState(player, comp);
 
