@@ -6,23 +6,52 @@ outputs 1 if player wins,
 */
 
 function checkWinState(player, comp) {
+    let compDiv = document.querySelector('.result');
+    compDiv.innerHTML = '';
+
+    let pPlayer = document.createElement('p');
+    pPlayer.textContent = "You Played: " + player;
+    compDiv.append(pPlayer);
+
+    let pComp = document.createElement("p");
+    pComp.textContent = "Computer Played: " + comp;
+    compDiv.appendChild(pComp);
+
     if (player === "scissor") {
         switch (comp) {
-            case ("scissor"): return 0;
-            case ("paper"): return 1;
-            case ("rock"): return -1;
+            case ("scissor"): 
+                outputEnd(0);
+                break;
+            case ("paper"): 
+                outputEnd(1);
+                break;
+            case ("rock"): 
+                outputEnd(-1);
+                break;
         }
     } else if (player === "rock") {
         switch (comp) {
-            case ("scissor"): return 1;
-            case ("paper"): return -1;
-            case ("rock"): return 0;
+            case ("scissor"): 
+                outputEnd(1);
+                break;
+            case ("paper"):    
+                outputEnd(-1);
+                break;
+            case ("rock"): 
+                outputEnd(0);
+                break;
         }
     } else if (player === "paper") {
         switch (comp) {
-            case ("scissor"): return -1;
-            case ("paper"): return 0;
-            case ("rock"): return 1;
+            case ("scissor"): 
+                outputEnd(-1);
+                break;
+            case ("paper"):    
+                outputEnd(0);
+                break;
+            case ("rock"):
+                outputEnd(1);
+                break;
         }
     }
 }
@@ -41,67 +70,38 @@ function generateCompTurn() {
     }
 }
 
-/* 
-Receives and parses user input for each round
-*/
-
-function receiveUserInput() {
-    // Loop to get user input until a valid input is given
-    while(true) {
-        let x = String(prompt("> ")).toLowerCase();
-
-        if (!(x === "rock" || x === "paper" || x === "scissor")) {
-            console.log("Invalid input detected, only rock/paper/scissor are accepted inputs. Try Again!");
-        } else {
-            return x;
-        }
-    }
-}
-
 /*
-Receives and parses user input for end of game
+Output game end state
 */
+function outputEnd(gameState) {
+    let resultDiv = document.querySelector('.result');
 
-function playAgain() {
-    while (true) {
-        let x = String(prompt("Play Again? (y/n)")).toLowerCase();
+    const p = document.createElement("p");
 
-        switch (x) {
-            case ("y"): return true;
-            case ("n"): return false;
-            default: continue;
-        }
-    }
-}
-
-/* 
-Handles and runs each individual round of
-rock paper scissor
-*/
-function round() {
-    let player = receiveUserInput();
-    let comp = generateCompTurn();
-    let winState = checkWinState(player, comp);
-
-    if (winState == -1) {
-        console.log("You lose! :(");
-    } else if (winState == 0) {
-        console.log("Draw!");
-    } else if (winState == 1) {
-        console.log("You win! :)");
+    switch (gameState) {
+        case(1):
+            p.textContent = "You Win!";
+            break;
+        case(0):
+            p.textContent = "Draw!";
+            break;
+        case(-1):
+            p.textContent = "You Lose!";
+            break;
     }
 
-    return playAgain();
+    resultDiv.appendChild(p);
 }
 
-function main() {
-    console.log("\nInput turn (rock/paper/scissor)");
-    let continueGame = true;
-    while (continueGame) {
-        continueGame = round();
-    }
-}
 
-console.log("Welcome to Rock, Paper, Scissor!\nInput \"rock\", \"paper\" or \"scissor\" to play!");
-main();
+let rockButton = document.querySelector("#rock");
+let paperButton = document.querySelector('#paper');
+let scissorButton = document.querySelector('#scissor');
+    
+rockButton.addEventListener('click', () => checkWinState('rock', generateCompTurn()));
+paperButton.addEventListener('click', () => checkWinState('paper', generateCompTurn()));
+scissorButton.addEventListener('click', () => checkWinState('scissor', generateCompTurn()));
+
+
+
 
